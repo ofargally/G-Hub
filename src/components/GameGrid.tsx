@@ -5,16 +5,16 @@ import GameCardSkeleton from "./GameCardSkeleton";
 import GameCardContainer from "./GameCardContainer";
 
 const GameGrid = () => {
-  const { games, error, isLoading } = useGames();
+  const { data, error, isLoading } = useGames();
   const loadGames = () => {
-    return games.map((game) => (
+    return data.map((game) => (
       <GameCardContainer>
         <GameCard key={game.id} game={game} />
       </GameCardContainer>
     ));
   };
   const loadSkeletons = () => {
-    return games.map((game) => (
+    return data.map((game) => (
       <GameCardContainer>
         <GameCardSkeleton key={game.id} />
       </GameCardContainer>
