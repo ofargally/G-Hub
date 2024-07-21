@@ -12,7 +12,7 @@ const GameCard = ({ game }: Props) => {
   const width = 600;
   const height = 400;
   return (
-    <Card width="300px" borderRadius={10} overflow="hidden">
+    <Card>
       <Image
         src={getCroppedImageUrl(game.background_image, width, height)}
       ></Image>
