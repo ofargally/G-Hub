@@ -1,25 +1,38 @@
 import useGames from "../hooks/useGames";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Button, SimpleGrid, Text } from "@chakra-ui/react";
 import GameCard from "./GameCard";
 import GameCardSkeleton from "./GameCardSkeleton";
 import GameCardContainer from "./GameCardContainer";
 import { GameQuery } from "../App";
+import React from "react";
 
 interface Props {
   gameQuery: GameQuery;
 }
 const GameGrid = ({ gameQuery }: Props) => {
-  const { data, error, isLoading } = useGames(gameQuery);
+  const {
+    data,
+    error,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useGames(gameQuery);
+  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const loadGames = () => {
-    return data?.results.map((game) => (
-      <GameCardContainer key={game.id}>
-        <GameCard game={game} />
-      </GameCardContainer>
+    return data?.pages.map((page, index) => (
+      <React.Fragment key={index}>
+        {page.results.map((game) => (
+          <GameCardContainer key={game.id}>
+            <GameCard game={game} />
+          </GameCardContainer>
+        ))}
+      </React.Fragment>
     ));
   };
   const loadSkeletons = () => {
-    return data?.results.map((game) => (
-      <GameCardContainer key={game.id}>
+    return skeletons.map((index) => (
+      <GameCardContainer key={index}>
         <GameCardSkeleton />
       </GameCardContainer>
     ));
@@ -30,13 +43,16 @@ const GameGrid = ({ gameQuery }: Props) => {
   }
 
   return (
-    <SimpleGrid
-      columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-      padding="10"
-      spacing={6}
-    >
-      {isLoading ? loadSkeletons() : loadGames()}
-    </SimpleGrid>
+    <Box padding="10">
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
+        {isLoading ? loadSkeletons() : loadGames()}
+      </SimpleGrid>
+      {hasNextPage && (
+        <Button onClick={() => fetchNextPage()} marginY={5}>
+          {isFetchingNextPage ? "Loading..." : "Load More"}
+        </Button>
+      )}
+    </Box>
   );
 };
 
