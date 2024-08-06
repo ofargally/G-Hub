@@ -22,5 +22,10 @@ class APIClient<T> {
       .get<Response<T>>(this.endpoint, config)
       .then((response) => response.data);
   };
+  get = (slug: string) => {
+    return axiosInstance
+      .get<T>("/games/" + slug)
+      .then((response) => response.data);
+  };
 }
 export default APIClient;
