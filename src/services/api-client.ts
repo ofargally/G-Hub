@@ -4,6 +4,7 @@ export interface Response<T> {
   count: number;
   results: T[];
   next: string | null;
+  previous: string | null;
 }
 const axiosInstance = axios.create({
   baseURL: "https://api.rawg.io/api/",
@@ -24,7 +25,7 @@ class APIClient<T> {
   };
   get = (slug: string) => {
     return axiosInstance
-      .get<T>("/games/" + slug)
+      .get<T>(this.endpoint + "/" + slug)
       .then((response) => response.data);
   };
 }
