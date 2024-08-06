@@ -19,7 +19,7 @@ const SortSelector = () => {
     <Menu>
       <MenuButton as={Button} rightIcon={<BsChevronDown />}>
         Order by:{" "}
-        {sortOrder == ""
+        {!sortOrder
           ? "Relevance"
           : sortOrders.find((order) => order.value === sortOrder)?.label}
       </MenuButton>
